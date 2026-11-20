@@ -7,7 +7,7 @@
     prime: {
       unit: '送料がかかる注文(月)',
       bars: [1, 2, 3, 4].map(function (n) { return { label: n + '回', value: n * 460, series: 'a' }; }),
-      lines: [{ value: 600, label: 'プライム 600円' }, { value: 300, label: 'Student 300円' }],
+      lines: [{ value: 600, label: 'プライム 600円' }, { value: 300, label: 'Prime Student 300円' }],
       max: 2000
     },
     kindle: {
@@ -17,7 +17,7 @@
       max: 3000
     },
     audible: {
-      unit: '聴く冊数(月)・1冊=2,000円・約9時間',
+      unit: '聴く冊数(月)・1冊2,000円・約9時間',
       legend: [{ series: 'b', label: 'スタンダード(月額880円)の得' }, { series: 'c', label: 'プレミアム(月額1,500円)の得' }],
       groups: [1, 2, 3].map(function (n) {
         return {

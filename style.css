@@ -282,3 +282,15 @@ body { padding-bottom: 72px; }
   .tile { padding: 6px 6px 8px; }
   .tile::after { top: 10px; right: 10px; width: 24px; height: 24px; }
 }
+
+/* 集客・導線(2026-11-21) */
+.h1-sub { display: block; font-size: 0.68em; color: var(--muted); margin-top: 4px; }
+.calc-back { margin: 10px 0 4px; clear: both; }
+.btn-back { font: inherit; font-weight: 700; min-height: 44px; padding: 8px 16px; border: 2px solid var(--accent); border-radius: 22px; background: var(--surface); color: var(--accent); cursor: pointer; }
+.btn-back:hover { background: #e3f1ed; }
+.calc-back a { font-weight: 700; }
+.also-calc { margin: 6px 0 12px; font-size: 0.9rem; }
+.also-calc .btn-back { margin: 4px 6px 0 0; padding: 6px 14px; }
+@media (min-width: 1000px) {
+  .calc-layout #result { max-height: calc(100vh - 24px); overflow: auto; }
+}

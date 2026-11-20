@@ -15,6 +15,7 @@
   // このツール専用のトラッキングID(2026-11-21作成、DALのアソシエイト)
   var TAG = 'mototore03-22';
   var TRIAL_NOTE = '無料体験は対象の人だけが使えます。期間が終わると自動で有料に切り替わるので、続けない場合は期間内に解約してください。期間や条件は申し込みの画面で確かめてください。';
+  var TRIAL_NOTE_SHORT = '無料体験は対象の人だけ。期間が終わると自動で有料になります(詳しくは下の注意)。';
   var STUDENT_NOTE = 'Prime Studentは大学・大学院・短大・専門学校・高専の学生が対象で、高校生は対象外です。18歳未満の人は保護者の同意が必要です。';
   var DEFAULT_BOOK_HOURS = 9;
 
@@ -22,7 +23,7 @@
     prime: 'Amazonプライム',
     student: 'Prime Student',
     kindle: 'Kindle+(キンドルアンリミテッド)',
-    audible: 'Audible(オーディブル)',
+    audible: 'オーディブル',
     music: 'Music Unlimited'
   };
   var SHORT = { prime: 'プライム', student: 'Prime Student', kindle: 'Kindle+', audible: 'オーディブル', music: 'Music Unlimited' };
@@ -51,7 +52,7 @@
     if (fixed !== v && fixMode) {
       el.value = String(fixed);
       var lab = document.querySelector('label[for="' + id + '"]');
-      adjusted.push('「' + (lab ? lab.textContent.replace(/[?？]$/, '') : id) + '」を' + fixed.toLocaleString('ja-JP') + 'に');
+      adjusted.push((lab && lab.dataset.name ? lab.dataset.name : (lab ? lab.textContent.replace(/[?？]$/, '') : id)) + 'を' + fixed.toLocaleString('ja-JP') + 'に');
     }
     return fixed;
   }
@@ -65,6 +66,12 @@
   }
   function count(n) {
     return n.toLocaleString('ja-JP');
+  }
+  function gainPhrase(n) {
+    var r = Math.round(n);
+    if (r > 0) return '月' + r.toLocaleString('ja-JP') + '円得する';
+    if (r < 0) return '月' + Math.abs(r).toLocaleString('ja-JP') + '円損する';
+    return '得も損もない';
   }
   function signed(n) {
     var r = Math.round(n);
@@ -116,8 +123,8 @@
         used: isStudent ? (checked('have-student') || checked('have-prime')) : checked('have-prime'),
         tried: checked(isStudent ? 'tried-student' : 'tried-prime'),
         detail: '送料' + yen(smallOrders * shipFee) + (rushOrders ? '+お急ぎ便など' + yen(rushOrders * rushExtra) : '') + (videoValue ? '+見放題など' + yen(videoValue) : '') + '−会費' + yen(primeFee),
-        even: pe ? '3,500円未満の注文が月' + count(pe) + '回あれば、送料だけで会費を上回る計算' : '',
-        extra: (!isStudent && p.primeYear > 0) ? '年会費(' + yen(p.primeYear) + ')なら月あたり約' + yen(p.primeYear / 12) + 'で、月' + signed(shopValue - p.primeYear / 12) : ''
+        even: pe ? '送料がかかる注文が月' + count(pe) + '回以上なら、送料だけで入った方が得になる計算です。' : '',
+        extra: (!isStudent && p.primeYear > 0) ? '年会費(' + yen(p.primeYear) + '、12か月続ける場合)なら月あたり約' + yen(p.primeYear / 12) + 'で、' + gainPhrase(shopValue - p.primeYear / 12) + '計算です。' : ''
       });
     }
 
@@ -134,7 +141,7 @@
         key: 'kindle', net: books * bookPrice - p.kindle, fee: p.kindle,
         used: checked('have-kindle'), tried: checked('tried-kindle'),
         detail: yen(bookPrice) + '×' + count(books) + '冊−月額' + yen(p.kindle),
-        even: ke ? '1冊' + yen(bookPrice) + 'なら、月' + count(ke) + '冊から月額を上回る計算' : ''
+        even: ke ? '1冊' + yen(bookPrice) + 'なら、月' + count(ke) + '冊から月額を上回る計算です。' : ''
       });
     }
 
@@ -149,7 +156,7 @@
       var bookHours = bh >= 1 ? bh : DEFAULT_BOOK_HOURS;
       if (bh < 1 && fixMode) {
         document.getElementById('aud-book-hours').value = String(DEFAULT_BOOK_HOURS);
-        adjusted.push('1冊の時間を' + DEFAULT_BOOK_HOURS + '時間に');
+        adjusted.push('1冊の時間を' + DEFAULT_BOOK_HOURS + 'に');
       }
       var audBooks = hours / bookHours;
       var audPrice = num('aud-price');
@@ -161,13 +168,13 @@
       if (audPrice > 0) {
         // プレミアムがスタンダードより得になる聴く時間: 冊数 > 1 + (プレミアム−スタンダード)/1冊の値段
         var switchHours = Math.ceil(bookHours * (1 + (p.audP - p.audS) / audPrice));
-        even = (premium ? 'プレミアムで計算。' : (audPrice > p.audS ? 'スタンダードは、月1冊聴けば月額を上回る計算。' : '')) +
-          '1冊' + yen(audPrice) + 'なら、聴く時間が月' + count(switchHours) + '時間を超えるとプレミアムの方が得';
+        even = (premium ? 'プレミアム(聴き放題の対象の作品だけ)の方が得なので、プレミアムで計算しています。' : (audPrice > p.audS ? 'スタンダードは、月1冊聴けば月額を上回る計算です。' : '')) +
+          '1冊' + yen(audPrice) + 'なら、月' + count(switchHours) + '時間以上聴くとプレミアムの方が得です。';
       }
       rows.push({
         key: 'audible', net: premium ? netP : netS, fee: premium ? p.audP : p.audS, plan: audPlan,
         used: checked('have-audible'), tried: checked('tried-audible'),
-        detail: '月' + count(hours) + '時間÷1冊' + count(bookHours) + '時間=約' + (Math.round(audBooks * 10) / 10).toLocaleString('ja-JP') + '冊。' + audPlan + 'で計算(スタンダード' + signed(netS) + '/プレミアム' + signed(netP) + ')',
+        detail: '月約' + (Math.round(audBooks * 10) / 10).toLocaleString('ja-JP') + '冊(' + count(hours) + '時間÷1冊' + count(bookHours) + '時間)。スタンダード' + signed(netS) + '/プレミアム' + signed(netP),
         even: even
       });
     }
@@ -185,7 +192,7 @@
         key: 'music', net: musicNow - musicFee, fee: musicFee, plan: musicPlan,
         used: checked('have-music'), tried: checked('tried-music'),
         detail: '今の音楽サブスク' + yen(musicNow) + '−' + musicPlan + yen(musicFee),
-        even: (!isStudent && !haveAnyPrime) ? 'プライムに入っている場合は月' + yen(p.musicMember) + 'になります' : ''
+        even: (!isStudent && !haveAnyPrime) ? 'プライムに入っている場合、Music Unlimitedは月額' + yen(p.musicMember) + 'になります。' : (isStudent ? '学生プランは在学の確認が必要です。' : '')
       });
     }
     return { rows: rows, isStudent: isStudent, pending: pending, bands: bands };
@@ -229,7 +236,7 @@
     wrap.appendChild(a);
     var tn = document.createElement('p');
     tn.className = 'trial-note';
-    tn.textContent = TRIAL_NOTE + (row.key === 'student' ? STUDENT_NOTE : '');
+    tn.textContent = (placement === 'top_pick' ? TRIAL_NOTE : TRIAL_NOTE_SHORT) + (row.key === 'student' ? STUDENT_NOTE : '');
     wrap.appendChild(tn);
     return wrap;
   }
@@ -249,26 +256,27 @@
     var bestOwned = rows.filter(function (r) { return Math.round(r.net) > 0 && !canTry(r); })[0] || null;
     var msg;
     if (!rows.length) {
-      msg = res.pending.length ? '回数や冊数などの数字を入れると、すぐここに結果が出ます。' : '1で使うものを選ぶと、ここに月いくら得か損かが出ます。';
+      msg = res.pending.length ? '回数や冊数などに1以上を入れると、すぐここに結果が出ます。' : '上の1で使うものを選ぶと、ここに月いくら得か損かが出ます。';
     } else if (top && top === rows[0]) {
-      msg = 'いちばん得が大きいのは' + NAMES[top.key] + 'で、月' + signed(top.net) + 'の計算です。';
+      msg = 'いちばん得が大きいのは' + NAMES[top.key] + 'です。入ると、入らない場合より' + gainPhrase(top.net) + '計算です。';
     } else if (top) {
-      msg = '無料体験で試せる中では、' + NAMES[top.key] + 'がいちばん得が大きく、月' + signed(top.net) + 'の計算です。';
+      msg = '今入っておらず無料体験を使ったことがないものの中では、' + NAMES[top.key] + 'がいちばん得が大きく、' + gainPhrase(top.net) + '計算です。';
     } else if (bestOwned) {
-      msg = (bestOwned.used ? '今入っている' : '前に無料体験を使った') + NAMES[bestOwned.key] + 'は、月' + signed(bestOwned.net) + 'の計算です。';
+      msg = (bestOwned.used ? '今入っている' : '前に無料体験を使った') + NAMES[bestOwned.key] + 'は、入らない場合より' + gainPhrase(bestOwned.net) + '計算です。';
     } else {
-      msg = '入力した使い方だと、元が取れる計算のサービスはありません。今は入らなくてよさそうです。';
+      msg = '入力した使い方では、料金を上回る計算のサービスはありません(送料・本・音楽の差だけで比べています)。';
     }
     if (rows.length && res.pending.length) {
-      msg += '(' + res.pending.map(function (k) { return SHORT[k]; }).join('・') + 'は、数字を入れると出ます)';
+      msg += res.pending.map(function (k) { return SHORT[k]; }).join('・') + 'は、1以上を入れると計算します。';
     }
     summary.textContent = msg;
     document.getElementById('result-detail').hidden = !rows.length;
     document.getElementById('to-detail').hidden = !rows.length;
+    document.getElementById('also-calc').hidden = !(rows.length && checked('use-shop') && !checked('use-read') && !checked('use-listen'));
 
     var adj = document.getElementById('adjusted');
     adj.hidden = !adjusted.length;
-    adj.textContent = adjusted.length ? '入力を直して計算しました:' + adjusted.join('、') + 'しました。' : '';
+    adj.textContent = adjusted.length ? '入力を直しました:' + adjusted.join('、') + '。直した値で計算しています。' : '';
 
     var topBox = document.getElementById('top-pick');
     topBox.innerHTML = '';
@@ -280,10 +288,10 @@
       art.height = 480;
       art.alt = '';
       topBox.appendChild(art);
-      topBox.appendChild(text('h3', '', 'まず無料体験で試すなら: ' + NAMES[top.key]));
-      topBox.appendChild(text('p', 'top-net', '月' + signed(top.net) + (top.plan ? '(' + top.plan + ')' : '')));
-      topBox.appendChild(makeLink(top, 'top_pick', 1));
-      topBox.appendChild(text('p', 'small', '入力した値で得の額がいちばん大きいものを、機械的に選んでいます(紹介料の額は関係ありません)。'));
+      topBox.appendChild(text('h3', '', 'まず無料体験で試すなら:' + NAMES[top.key]));
+      topBox.appendChild(text('p', 'top-net', '月' + signed(top.net) + (top.plan ? '・' + top.plan + 'で計算' : '')));
+      topBox.appendChild(makeLink(top, 'top_pick', rows.indexOf(top) + 1));
+      var how = document.createElement('p'); how.className = 'small'; how.innerHTML = '得の額だけで機械的に選んでいます(紹介料の額は関係ありません)。<a href="#faq">選び方</a>'; topBox.appendChild(how);
       topBox.hidden = false;
     } else {
       topBox.hidden = true;
@@ -345,7 +353,7 @@
       if (r.even) li.appendChild(text('p', 'small even', r.even));
       if (r.extra) li.appendChild(text('p', 'small', r.extra));
       if (!canTry(r)) {
-        li.appendChild(text('p', 'small', r.used ? '「今入っている」にチェックがあるので、比べるだけにしています。' : '「前に無料体験を使った」にチェックがあるので、比べるだけにしています。'));
+        li.appendChild(text('p', 'small', r.used ? '「今入っている」にチェックがあるので、無料体験の案内は出していません。' : '「前に無料体験を使った」にチェックがあるので、無料体験の案内は出していません。'));
       } else if (net > 0 && (!top || top.key !== r.key)) {
         li.appendChild(makeLink(r, 'card', i + 1));
       }
@@ -362,6 +370,8 @@
       top_service: top ? top.key : 'none',
       n_profitable: nProfit,
       n_rows: rows.length,
+      n_links: document.querySelectorAll('#result a[data-service], #result-detail a[data-service]').length,
+      entry: entryUse || 'none',
       is_student: res.isStudent ? 'yes' : 'no',
       order_band: res.bands.order_band,
       read_band: res.bands.read_band,
@@ -383,8 +393,8 @@
   var formFocused = false;
   function updateSticky(rows, top, bestOwned, pending) {
     if (!rows.length) { sticky.hidden = true; return; }
-    var r = top ? '試すなら ' + SHORT[top.key] + ' 月+' + Math.round(top.net).toLocaleString('ja-JP') + '円(試算)'
-      : (bestOwned ? SHORT[bestOwned.key] + ' 月+' + Math.round(bestOwned.net).toLocaleString('ja-JP') + '円(試算)' : '今は元が取れる計算のものなし');
+    var r = top ? SHORT[top.key] + 'が月+' + Math.round(top.net).toLocaleString('ja-JP') + '円 得(目安)'
+      : (bestOwned ? '入っている' + SHORT[bestOwned.key] + 'は月+' + Math.round(bestOwned.net).toLocaleString('ja-JP') + '円 得(目安)' : '今は元が取れる計算のものなし');
     stickyText.textContent = r;
     sticky.hidden = resultInView || formFocused;
   }
@@ -422,7 +432,7 @@
       cb.closest('.tile').classList.toggle('is-on', cb.checked);
       if (cb.checked) any = true;
     });
-    document.getElementById('step-guide-text').textContent = any ? '選んだものの質問に答える(入れるとすぐ結果が変わります)' : '上で選ぶと、ここに質問が出ます。';
+    document.getElementById('step-guide-text').textContent = any ? '選んだものの質問に答える(答えるとすぐ結果が変わります)' : '上で選ぶと、ここに質問が出ます。';
     document.getElementById('step-guide').classList.toggle('is-active', any);
   }
 
@@ -435,6 +445,45 @@
       if (fix) announce();
     }, 150);
   }
+
+  // 指定のタイルを入れて、その質問へ移動する(本文の「自分の数字で計算する」・結果の「同じように計算できます」)
+  function openUse(id, student) {
+    var cb = document.getElementById(id);
+    if (!cb) return;
+    if (student && !checked('is-student')) { document.getElementById('is-student').checked = true; syncStudent(); }
+    if (!cb.checked) cb.checked = true;
+    syncSections();
+    live(true);
+    var sec = document.getElementById(cb.dataset.sec);
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    sec.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    var first = sec.querySelector('input[type="number"]');
+    if (first) first.focus({ preventScroll: true });
+  }
+  document.querySelectorAll('.btn-back[data-use]').forEach(function (b) {
+    b.addEventListener('click', function () { openUse(b.dataset.use, b.dataset.student === '1'); });
+  });
+  // タイルを入れた時、開いた質問が画面の下に隠れていれば少しだけ動かす
+  document.querySelectorAll('.tile input[data-sec]').forEach(function (cb) {
+    cb.addEventListener('change', function () {
+      if (!cb.checked) return;
+      var sec = document.getElementById(cb.dataset.sec);
+      setTimeout(function () {
+        var r = sec.getBoundingClientRect();
+        if (r.top > window.innerHeight - 80) sec.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+      }, 0);
+    });
+  });
+  // URLの ?use=shop|read|listen|music で、最初に選ぶタイルを決める(決まった値だけ受け付ける)
+  var entryUse = '';
+  (function () {
+    var m = { shop: 'use-shop', read: 'use-read', listen: 'use-listen', music: 'use-music' };
+    var v = new URLSearchParams(location.search).get('use');
+    if (v && m[v]) {
+      entryUse = v;
+      document.getElementById(m[v]).checked = true;
+    }
+  })();
 
   // 読み上げ用: 確定した時だけ、結果を1文で知らせる
   var statusEl = document.getElementById('live-status');
