@@ -42,8 +42,8 @@
   <div class="intro">
   <div class="intro-text">
   <h1>Amazonのサブスク、<br>月いくら得か計算する</h1>
-  <p class="lead">プライム・Kindle+(キンドルアンリミテッド)・オーディブル・Music Unlimited・Prime Studentを、自分の使い方で比べます。使うところだけ入れて「計算する」を押してください。</p>
-  <p class="unofficial">個人が作った非公式の試算ツールで、Amazon.co.jpとは関係ありません。入力した数字はこの端末の中だけで計算し、数字そのものはどこにも送りません(アクセス解析には、おおまかな区分だけを記録します)。</p>
+  <p class="lead">プライム・Kindle+(キンドルアンリミテッド)・オーディブル・Music Unlimited・Prime Studentを、自分の使い方で比べます。使うものを選んで数字を入れると、すぐ結果が出ます。<a href="#qa-h">計算せずに目安だけ見る</a></p>
+  <p class="unofficial">個人が作った非公式の試算ツールで、Amazon.co.jpとは関係ありません。入力した数字そのものはどこにも送りません(アクセス解析には、おおまかな区分だけを記録します)。</p>
 
   </div>
   <figure class="hero-art">
@@ -51,64 +51,37 @@
   </figure>
   </div>
 
-  <section class="quick-answers" aria-labelledby="qa-h">
-    <h2 id="qa-h">損益分岐点の目安(2026年11月21日時点の料金)</h2>
-    <ul>
-      <li><a href="#prime">プライム(月額600円)</a>:3,500円未満の注文が<b>月2回</b>で送料が会費を上回る</li>
-      <li><a href="#student">Prime Student(月額300円)</a>:3,500円未満の注文が<b>月1回</b>で上回る</li>
-      <li><a href="#kindle">Kindle+(月額980円)</a>:1冊700円の対象の本を<b>月2冊</b>で上回る</li>
-      <li><a href="#audible">オーディブル</a>:1冊2,000円の本を<b>月1冊ならスタンダード(880円)、月2冊以上ならプレミアム(1,500円)</b></li>
-      <li><a href="#music">Music Unlimited</a>:今払っている音楽サブスクの月額と比べる</li>
-    </ul>
-  </section>
 
+  <div class="calc-layout">
   <form id="calc" novalidate>
-    <section class="panel" aria-labelledby="q-you">
-      <h2 id="q-you">あなたについて</h2>
-      <div class="field">
-        <label class="check"><input type="checkbox" id="is-student" aria-describedby="is-student-note"><span>大学・大学院・短大・専門学校・高専の学生</span></label>
-        <span class="note" id="is-student-note">高校生はPrime Studentの対象外です。チェックすると、プライムの代わりにPrime Student、Music Unlimitedは学生プランで計算します。</span>
+    <section class="panel step-panel" aria-labelledby="q-pick">
+      <h2 id="q-pick"><span class="step-no" aria-hidden="true">1</span>使っている・気になるものを選ぶ</h2>
+      <p class="hint" id="pick-hint">いくつでも選べます。選ぶと、このすぐ下に質問が開きます。</p>
+      <div class="tiles" role="group" aria-labelledby="q-pick">
+        <label class="tile"><input type="checkbox" id="use-shop" aria-label="買い物(プライム)" aria-describedby="pick-hint" data-sec="sec-shop"><img src="img/prime.webp" width="640" height="480" alt=""><span class="tile-name">買い物</span><span class="tile-sub">プライム</span></label>
+        <label class="tile"><input type="checkbox" id="use-read" aria-label="読む(Kindle+)" aria-describedby="pick-hint" data-sec="sec-read"><img src="img/kindle.webp" width="640" height="480" alt=""><span class="tile-name">読む</span><span class="tile-sub">Kindle+</span></label>
+        <label class="tile"><input type="checkbox" id="use-listen" aria-label="聴く(オーディブル)" aria-describedby="pick-hint" data-sec="sec-listen"><img src="img/audible.webp" width="640" height="480" alt=""><span class="tile-name">聴く</span><span class="tile-sub">オーディブル</span></label>
+        <label class="tile"><input type="checkbox" id="use-music" aria-label="音楽(Music Unlimited)" aria-describedby="pick-hint" data-sec="sec-music"><img src="img/music.webp" width="640" height="480" alt=""><span class="tile-name">音楽</span><span class="tile-sub">Music Unlimited</span></label>
       </div>
-      <fieldset class="field">
-        <legend class="label">今入っているもの</legend>
-        <span class="note" id="have-note">比べるだけにして、無料体験の案内を出しません。Music Unlimitedの料金は、プライム(Prime Student)に今入っているかで決まります。</span>
-        <div class="checks">
-          <label class="check"><input type="checkbox" id="have-prime" aria-describedby="have-note"><span>Amazonプライム</span></label>
-          <label class="check" data-student="only" hidden><input type="checkbox" id="have-student" aria-describedby="have-note"><span>Prime Student</span></label>
-          <label class="check"><input type="checkbox" id="have-kindle"><span>Kindle+</span></label>
-          <label class="check"><input type="checkbox" id="have-audible"><span>オーディブル</span></label>
-          <label class="check"><input type="checkbox" id="have-music"><span>Music Unlimited</span></label>
-        </div>
-      </fieldset>
-      <fieldset class="field">
-        <legend class="label">前に無料体験を使ったもの</legend>
-        <span class="note" id="tried-note">無料体験の対象にならない場合があるので、案内を出しません。</span>
-        <div class="checks">
-          <label class="check" data-student="not"><input type="checkbox" id="tried-prime" aria-describedby="tried-note"><span>Amazonプライム</span></label>
-          <label class="check" data-student="only" hidden><input type="checkbox" id="tried-student" aria-describedby="tried-note"><span>Prime Student</span></label>
-          <label class="check"><input type="checkbox" id="tried-kindle"><span>Kindle+</span></label>
-          <label class="check"><input type="checkbox" id="tried-audible"><span>オーディブル</span></label>
-          <label class="check"><input type="checkbox" id="tried-music"><span>Music Unlimited</span></label>
-        </div>
-      </fieldset>
+      <label class="chip"><input type="checkbox" id="is-student" aria-describedby="is-student-note"><span>大学・大学院・短大・専門学校・高専の学生</span></label>
+      <p class="note" id="is-student-note">学生は、プライムの代わりにPrime Student、Music Unlimitedは学生プランで計算します。高校生はPrime Studentの対象外です。</p>
     </section>
 
-    <section class="panel" aria-labelledby="q-shop">
-      <h2 id="q-shop">買い物(プライム・Prime Student)</h2>
-      <p class="hint">Amazon.co.jpが発送する商品で数えます。3,500円以上の注文は会員でなくても通常配送が無料です。</p>
+    <p class="step-guide" id="step-guide"><span class="step-no" aria-hidden="true">2</span><span id="step-guide-text">上で選ぶと、ここに質問が出ます。</span></p>
+
+    <section class="panel q-panel" id="sec-shop" aria-labelledby="q-shop" hidden>
+      <h2 id="q-shop"><img src="img/prime.webp" width="640" height="480" alt="" class="q-icon"><span>買い物(<span data-student="not">プライム</span><span data-student="only" hidden>Prime Student</span>)</span></h2>
       <div class="field">
-        <label for="small-orders">まとめて3,500円以上にできない注文は月に何回?</label>
-        <span class="note" id="small-orders-note">会員でないと1回460円(本州・四国)の送料がかかる注文です</span>
-        <div class="input-row"><input type="number" id="small-orders" inputmode="numeric" min="0" step="1" value="0" aria-describedby="small-orders-note"><span class="unit">回</span>
-          <div class="quick" role="group" aria-label="3,500円未満の注文の回数"><button type="button" data-target="small-orders" data-set="1">1回</button><button type="button" data-target="small-orders" data-set="2">2回</button><button type="button" data-target="small-orders" data-set="4">4回</button><button type="button" data-target="small-orders" data-set="8">8回</button></div>
-        </div>
+        <label for="small-orders">まとめて3,500円以上にできない注文は、月に何回?</label>
+        <span class="note" id="small-orders-note">会員でないと、1回460円(本州・四国)の送料がかかる注文です。3,500円以上の注文は会員でなくても送料無料です</span>
+        <div class="stepper"><button type="button" class="step" data-target="small-orders" data-step="-1" aria-label="注文の回数を1減らす">−</button><input type="number" id="small-orders" inputmode="numeric" min="0" step="1" value="0" aria-describedby="small-orders-note"><button type="button" class="step" data-target="small-orders" data-step="1" aria-label="注文の回数を1増やす">+</button><span class="unit">回</span></div>
       </div>
       <details class="more">
         <summary>お急ぎ便・Prime Videoも入れる(任意)</summary>
         <div class="field">
           <label for="rush-orders">3,500円以上の注文で、お急ぎ便・日時指定を使いたい回数は?</label>
           <span class="note" id="rush-orders-note">会員でないと1回510円かかります</span>
-          <div class="input-row"><input type="number" id="rush-orders" inputmode="numeric" min="0" step="1" value="0" aria-describedby="rush-orders-note"><span class="unit">回</span></div>
+          <div class="stepper"><button type="button" class="step" data-target="rush-orders" data-step="-1" aria-label="お急ぎ便の回数を1減らす">−</button><input type="number" id="rush-orders" inputmode="numeric" min="0" step="1" value="0" aria-describedby="rush-orders-note"><button type="button" class="step" data-target="rush-orders" data-step="1" aria-label="お急ぎ便の回数を1増やす">+</button><span class="unit">回</span></div>
         </div>
         <div class="field">
           <label for="video-value">Prime Videoなどの見放題に、月いくらの価値がある?</label>
@@ -116,60 +89,75 @@
           <div class="input-row"><input type="number" id="video-value" inputmode="numeric" min="0" step="10" value="0" aria-describedby="video-value-note"><span class="unit">円</span></div>
         </div>
       </details>
+      <div class="status-chips" role="group" aria-label="プライムの今の状態">
+        <label class="chip"><input type="checkbox" id="have-prime"><span>プライムに今入っている</span></label>
+        <label class="chip" data-student="not"><input type="checkbox" id="tried-prime"><span>前にプライムの無料体験を使った</span></label>
+        <label class="chip" data-student="only" hidden><input type="checkbox" id="have-student"><span>Prime Studentに今入っている</span></label>
+        <label class="chip" data-student="only" hidden><input type="checkbox" id="tried-student"><span>前にPrime Studentの無料体験を使った</span></label>
+      </div>
     </section>
 
-    <section class="panel" aria-labelledby="q-read">
-      <h2 id="q-read">読む(Kindle+)</h2>
-      <p class="hint">全部の本が読み放題の対象ではありません。読みたい本のうち、対象の本で、入らなければ実際に買う本だけを数えてください。</p>
+    <section class="panel q-panel" id="sec-read" aria-labelledby="q-read" hidden>
+      <h2 id="q-read"><img src="img/kindle.webp" width="640" height="480" alt="" class="q-icon">読む(Kindle+)</h2>
       <div class="field">
-        <label for="ku-books">対象の本を月に何冊読む?</label>
-        <div class="input-row"><input type="number" id="ku-books" inputmode="numeric" min="0" step="1" value="0"><span class="unit">冊</span>
-          <div class="quick" role="group" aria-label="読む冊数"><button type="button" data-target="ku-books" data-set="1">1冊</button><button type="button" data-target="ku-books" data-set="2">2冊</button><button type="button" data-target="ku-books" data-set="4">4冊</button><button type="button" data-target="ku-books" data-set="8">8冊</button></div>
-        </div>
+        <label for="ku-books">読み放題の対象の本を、月に何冊読む?</label>
+        <span class="note" id="ku-books-note">入らなければ実際に買う本だけを数えてください</span>
+        <div class="stepper"><button type="button" class="step" data-target="ku-books" data-step="-1" aria-label="冊数を1減らす">−</button><input type="number" id="ku-books" inputmode="numeric" min="0" step="1" value="0" aria-describedby="ku-books-note"><button type="button" class="step" data-target="ku-books" data-step="1" aria-label="冊数を1増やす">+</button><span class="unit">冊</span></div>
       </div>
       <div class="field">
         <label for="ku-price">買うと1冊いくら?</label>
-        <span class="note" id="ku-price-note">仮に700円で計算します。よく読む本(漫画・雑誌・小説など)の値段に変えてください</span>
+        <span class="note" id="ku-price-note">仮に700円。漫画なら500円くらい、小説・ビジネス書ならもっと高め</span>
         <div class="input-row"><input type="number" id="ku-price" inputmode="numeric" min="0" step="10" value="700" aria-describedby="ku-price-note"><span class="unit">円</span></div>
+      </div>
+      <div class="status-chips" role="group" aria-label="Kindle+の今の状態">
+        <label class="chip"><input type="checkbox" id="have-kindle"><span>Kindle+に今入っている</span></label>
+        <label class="chip"><input type="checkbox" id="tried-kindle"><span>前に無料体験を使った</span></label>
       </div>
     </section>
 
-    <section class="panel" aria-labelledby="q-listen">
-      <h2 id="q-listen">聴く(オーディブル)</h2>
-      <p class="hint">通勤・家事・運動など、耳が空いている時間で考えます。聴き放題の対象の本で、入らなければ実際に買う本だけを数えてください。</p>
+    <section class="panel q-panel" id="sec-listen" aria-labelledby="q-listen" hidden>
+      <h2 id="q-listen"><img src="img/audible.webp" width="640" height="480" alt="" class="q-icon">聴く(オーディブル)</h2>
       <div class="field">
-        <label for="aud-hours">本を聴く時間は月に何時間?</label>
-        <span class="note" id="aud-hours-note">1日30分を20日なら10時間</span>
-        <div class="input-row"><input type="number" id="aud-hours" inputmode="numeric" min="0" step="1" value="0" aria-describedby="aud-hours-note"><span class="unit">時間</span>
-          <div class="quick" role="group" aria-label="聴く時間"><button type="button" data-target="aud-hours" data-set="5">5時間</button><button type="button" data-target="aud-hours" data-set="10">10時間</button><button type="button" data-target="aud-hours" data-set="20">20時間</button><button type="button" data-target="aud-hours" data-set="40">40時間</button></div>
-        </div>
+        <label for="aud-hours">通勤・家事などで本を聴く時間は、月に何時間?</label>
+        <span class="note" id="aud-hours-note">1日30分×20日=10時間。1冊はおよそ9時間です</span>
+        <div class="stepper"><button type="button" class="step" data-target="aud-hours" data-step="-5" aria-label="時間を5減らす">−5</button><input type="number" id="aud-hours" inputmode="numeric" min="0" step="1" value="0" aria-describedby="aud-hours-note"><button type="button" class="step" data-target="aud-hours" data-step="5" aria-label="時間を5増やす">+5</button><span class="unit">時間</span></div>
       </div>
       <details class="more">
         <summary>1冊の長さと値段を変える(任意)</summary>
         <div class="field">
           <label for="aud-book-hours">1冊を何時間で聴き終える?</label>
-          <span class="note" id="aud-book-hours-note">仮に9時間で計算します。本によって数時間〜十数時間です</span>
+          <span class="note" id="aud-book-hours-note">仮に9時間。本によって数時間〜十数時間です</span>
           <div class="input-row"><input type="number" id="aud-book-hours" inputmode="decimal" min="1" step="1" value="9" aria-describedby="aud-book-hours-note"><span class="unit">時間</span></div>
         </div>
         <div class="field">
           <label for="aud-price">聴きたい本を1冊ずつ買うと、いくら?</label>
-          <span class="note" id="aud-price-note">仮に2,000円で計算します。聴きたい本の値段に変えてください</span>
+          <span class="note" id="aud-price-note">仮に2,000円。聴きたい本の値段に変えてください</span>
           <div class="input-row"><input type="number" id="aud-price" inputmode="numeric" min="0" step="10" value="2000" aria-describedby="aud-price-note"><span class="unit">円</span></div>
         </div>
       </details>
+      <div class="status-chips" role="group" aria-label="オーディブルの今の状態">
+        <label class="chip"><input type="checkbox" id="have-audible"><span>オーディブルに今入っている</span></label>
+        <label class="chip"><input type="checkbox" id="tried-audible"><span>前に無料体験を使った</span></label>
+      </div>
     </section>
 
-    <section class="panel" aria-labelledby="q-music">
-      <h2 id="q-music">音楽(Music Unlimited)</h2>
-      <p class="hint">今お金を払っている音楽サブスクを、Music Unlimitedに入れ替える前提で計算します。払っていなければ0のままで、計算しません。</p>
+    <section class="panel q-panel" id="sec-music" aria-labelledby="q-music" hidden>
+      <h2 id="q-music"><img src="img/music.webp" width="640" height="480" alt="" class="q-icon">音楽(Music Unlimited)</h2>
       <div class="field">
-        <label for="music-now">今払っている音楽サブスクは月いくら?</label>
-        <div class="input-row"><input type="number" id="music-now" inputmode="numeric" min="0" step="10" value="0"><span class="unit">円</span></div>
+        <label for="music-now">今お金を払っている音楽サブスクは、月いくら?</label>
+        <span class="note" id="music-now-note">それをMusic Unlimitedに入れ替える前提で比べます。払っていなければ0円</span>
+        <div class="input-row"><input type="number" id="music-now" inputmode="numeric" min="0" step="10" value="0" aria-describedby="music-now-note"><span class="unit">円</span></div>
+        <div class="quick" role="group" aria-label="音楽サブスクによくある月額"><button type="button" data-target="music-now" data-set="980">980円</button><button type="button" data-target="music-now" data-set="1080">1,080円</button><button type="button" data-target="music-now" data-set="1180">1,180円</button></div>
+      </div>
+      <div class="status-chips" role="group" aria-label="Music Unlimitedの今の状態">
+        <label class="chip"><input type="checkbox" id="have-music"><span>Music Unlimitedに今入っている</span></label>
+        <label class="chip"><input type="checkbox" id="music-prime"><span>プライム(Prime Student)会員</span></label>
+        <label class="chip"><input type="checkbox" id="tried-music"><span>前に無料体験を使った</span></label>
       </div>
     </section>
 
     <section class="panel" aria-labelledby="q-fee">
-      <h2 id="q-fee">料金(変わったら直せます)</h2>
+      <h2 id="q-fee">料金(ふだんは触らなくてOK)</h2>
       <p class="hint asof">確認日:2026年11月21日。公式ページの料金(税込)を入れてあります。キャンペーンの料金は入れていません。</p>
       <details class="more">
         <summary>料金と前提を見る・直す</summary>
@@ -190,24 +178,45 @@
     </section>
 
     <div class="actions">
-      <button type="submit" class="btn-calc">計算する</button>
-      <button type="reset" class="btn-reset">入力を消す</button>
+      <button type="submit" class="btn-calc" id="go-result">結果を見る</button>
+      <button type="reset" class="btn-reset">はじめからやり直す</button>
     </div>
   </form>
 
-  <section id="result" aria-labelledby="result-h" hidden>
-    <h2 id="result-h" class="vh">計算の結果</h2>
+  <section id="result" aria-labelledby="result-h">
+    <h2 id="result-h"><span class="step-no" aria-hidden="true">3</span>結果(入力するとすぐ変わります)</h2>
     <p id="summary" tabindex="-1"></p>
+    <p class="small">入力した値での目安です。</p>
     <p id="adjusted" class="small" hidden></p>
     <div id="top-pick" class="panel" hidden></div>
     <div id="result-chart" aria-hidden="true" hidden></div>
-    <h3 class="vh">サブスクの得と損(得の大きい順)</h3>
+    <p class="to-detail" id="to-detail" hidden><a href="#detail-h">サービスごとの内訳を見る ↓</a></p>
+    <noscript><p>計算にはJavaScriptが必要です。下の「損益分岐点の目安」と表で目安を確かめられます。</p></noscript>
+  </section>
+  <p class="vh" role="status" id="live-status"></p>
+  </div>
+
+  <section id="result-detail" aria-labelledby="detail-h" hidden>
+    <h2 id="detail-h">サービスごとの内訳(得の大きい順)</h2>
     <ul id="cards"></ul>
     <ul class="premise">
       <li>結果は、入力した値と上の料金をもとにした目安で、得を約束するものではありません。</li>
       <li>「得」は、サブスクに入らずに同じことをした場合(送料を払う・本を1冊ずつ買う・今の音楽サブスクを続ける)と比べた差です。入らない時に実際には買わない本は、数えない方が正確です。</li>
       <li>無料体験は対象の人だけが使えます(前に使った人は対象外の場合があります)。期間や条件は申し込みの画面で確かめてください。期間が終わると自動で有料に切り替わるので、続けない場合は期間内に解約してください。</li>
       <li>Music Unlimitedは、プライム(Prime Student)に今入っている場合は会員の料金で計算しています。</li>
+    </ul>
+  </section>
+
+  <div class="sticky-result" id="sticky-result" hidden><a href="#result" id="sticky-link"><span id="sticky-text"></span><span class="sticky-go">結果へ ↓</span></a></div>
+
+  <section class="quick-answers" aria-labelledby="qa-h">
+    <h2 id="qa-h">損益分岐点の目安(2026年11月21日時点の料金)</h2>
+    <ul>
+      <li><a href="#prime">プライム(月額600円)</a>:3,500円未満の注文が<b>月2回</b>で送料が会費を上回る</li>
+      <li><a href="#student">Prime Student(月額300円)</a>:3,500円未満の注文が<b>月1回</b>で上回る</li>
+      <li><a href="#kindle">Kindle+(月額980円)</a>:1冊700円の対象の本を<b>月2冊</b>で上回る</li>
+      <li><a href="#audible">オーディブル</a>:1冊2,000円の本を<b>月1冊ならスタンダード(880円)、月2冊以上ならプレミアム(1,500円)</b></li>
+      <li><a href="#music">Music Unlimited</a>:今払っている音楽サブスクの月額と比べる</li>
     </ul>
   </section>
 
@@ -265,7 +274,7 @@
     <h2 id="faq">よくある質問</h2>
     <h3>無料体験は2回目も使える?</h3>
     <p>無料体験は対象の人だけが使えます。前に使ったことがある人は対象にならない場合があり、対象かどうかは申し込みの画面で表示されます。期間が終わると自動で有料に切り替わるので、続けない場合は期間内に解約してください。</p>
-    <h3>「まず試すなら」はどうやって選んでいる?</h3>
+    <h3>「まず無料体験で試すなら」はどうやって選んでいる?</h3>
     <p>入力した値で得の額がいちばん大きいものを、機械的に選んでいます。同じ額なら月額が安い方を上にします。紹介料の額は関係ありません。どれも得にならない場合は、何もすすめません。</p>
     <h3>料金が変わっていたら?</h3>
     <p>「料金と前提を見る・直す」から、今の料金に直して計算できます。</p>

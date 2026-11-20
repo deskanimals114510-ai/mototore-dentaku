@@ -33,6 +33,8 @@
   var out = document.getElementById('result');
   var summary = document.getElementById('summary');
   var adjusted = [];
+  // trueの時だけ、直した値を入力欄に書き戻す(入力の途中では書き戻さない)
+  var fixMode = false;
 
   // 数値を読む。整数の欄(回・冊)は切り捨て、負数・上限超えは直して欄にも書き戻す
   function num(id, opts) {
@@ -46,13 +48,14 @@
     if (fixed < 0) fixed = 0;
     if (fixed > 1000000) fixed = 1000000;
     if (opts && opts.int) fixed = Math.floor(fixed);
-    if (fixed !== v) {
+    if (fixed !== v && fixMode) {
       el.value = String(fixed);
       var lab = document.querySelector('label[for="' + id + '"]');
       adjusted.push('「' + (lab ? lab.textContent.replace(/[?？]$/, '') : id) + '」を' + fixed.toLocaleString('ja-JP') + 'に');
     }
     return fixed;
   }
+  function used(id) { return checked(id); }
   function checked(id) {
     var el = document.getElementById(id);
     return !!(el && el.checked);
@@ -88,18 +91,24 @@
       audS: num('fee-aud-s'), audP: num('fee-aud-p'),
       musicMember: num('fee-music-member'), musicNon: num('fee-music-non'), musicStudent: num('fee-music-student')
     };
-    var haveAnyPrime = checked('have-prime') || (isStudent && checked('have-student'));
+    var haveAnyPrime = checked('have-prime') || checked('music-prime') || (isStudent && checked('have-student'));
     var rows = [];
+    var pending = [];  // 選んだがまだ数字が0のサービス
+    var bands = { order_band: 'off', read_band: 'off', listen_band: 'off', music_band: 'off' };
 
     // 買い物(プライム・Prime Student)
-    var smallOrders = num('small-orders', { int: true });
-    var shipFee = num('ship-fee');
-    var rushOrders = num('rush-orders', { int: true });
-    var rushExtra = num('rush-extra');
-    var videoValue = num('video-value');
     var primeKey = isStudent ? 'student' : 'prime';
     var primeFee = isStudent ? p.student : p.prime;
-    if (smallOrders + rushOrders + videoValue > 0) {
+    if (used('use-shop')) {
+      var smallOrders = num('small-orders', { int: true });
+      var shipFee = num('ship-fee');
+      var rushOrders = num('rush-orders', { int: true });
+      var rushExtra = num('rush-extra');
+      var videoValue = num('video-value');
+      bands.order_band = band(smallOrders, [0, 2, 5]);
+    }
+    if (used('use-shop') && smallOrders + rushOrders + videoValue === 0) pending.push(primeKey);
+    else if (used('use-shop')) {
       var shopValue = smallOrders * shipFee + rushOrders * rushExtra + videoValue;
       var pe = breakEven(primeFee, shipFee);
       rows.push({
@@ -113,9 +122,13 @@
     }
 
     // 読む(Kindle+)
-    var books = num('ku-books', { int: true });
-    var bookPrice = num('ku-price');
-    if (books > 0) {
+    if (used('use-read')) {
+      var books = num('ku-books', { int: true });
+      var bookPrice = num('ku-price');
+      bands.read_band = band(books, [0, 2, 5]);
+    }
+    if (used('use-read') && books === 0) pending.push('kindle');
+    else if (used('use-read')) {
       var ke = breakEven(p.kindle, bookPrice);
       rows.push({
         key: 'kindle', net: books * bookPrice - p.kindle, fee: p.kindle,
@@ -126,11 +139,15 @@
     }
 
     // 聴く(Audible)。聴く時間を1冊の長さで割って冊数にする。0・空欄の長さは既定の9時間
-    var hours = num('aud-hours');
-    if (hours > 0) {
+    if (used('use-listen')) {
+      var hours = num('aud-hours');
+      bands.listen_band = band(hours, [0, 10, 30]);
+    }
+    if (used('use-listen') && hours === 0) pending.push('audible');
+    else if (used('use-listen')) {
       var bh = num('aud-book-hours');
       var bookHours = bh >= 1 ? bh : DEFAULT_BOOK_HOURS;
-      if (bh < 1) {
+      if (bh < 1 && fixMode) {
         document.getElementById('aud-book-hours').value = String(DEFAULT_BOOK_HOURS);
         adjusted.push('1冊の時間を' + DEFAULT_BOOK_HOURS + '時間に');
       }
@@ -156,8 +173,12 @@
     }
 
     // 音楽(Music Unlimited)。今払っている音楽サブスクと入れ替える前提。会員料金は今プライムに入っている時だけ
-    var musicNow = num('music-now');
-    if (musicNow > 0) {
+    if (used('use-music')) {
+      var musicNow = num('music-now');
+      bands.music_band = musicNow > 0 ? 'paying' : 'none';
+    }
+    if (used('use-music') && musicNow === 0) pending.push('music');
+    else if (used('use-music')) {
       var musicFee = isStudent ? p.musicStudent : (haveAnyPrime ? p.musicMember : p.musicNon);
       var musicPlan = isStudent ? '学生プラン' : (haveAnyPrime ? '個人プラン(プライム会員の料金)' : '個人プラン(会員でない料金)');
       rows.push({
@@ -167,7 +188,7 @@
         even: (!isStudent && !haveAnyPrime) ? 'プライムに入っている場合は月' + yen(p.musicMember) + 'になります' : ''
       });
     }
-    return { rows: rows, isStudent: isStudent };
+    return { rows: rows, isStudent: isStudent, pending: pending, bands: bands };
   }
 
   // 並べ方: 丸めた得の額→月額が安い→無料体験が長い(推しの選び方と同じ)
@@ -224,17 +245,26 @@
     var rows = res.rows.slice().sort(compareRows);
     var top = rows.filter(function (r) { return Math.round(r.net) > 0 && canTry(r); })[0] || null;
     var nProfit = rows.filter(function (r) { return Math.round(r.net) > 0; }).length;
-    out.hidden = false;
 
+    var bestOwned = rows.filter(function (r) { return Math.round(r.net) > 0 && !canTry(r); })[0] || null;
+    var msg;
     if (!rows.length) {
-      summary.textContent = '使い方が入力されていません。使うところ(注文回数・読む冊数・聴く時間・音楽サブスクの月額)を入れて、もう一度「計算する」を押してください。';
+      msg = res.pending.length ? '回数や冊数などの数字を入れると、すぐここに結果が出ます。' : '1で使うものを選ぶと、ここに月いくら得か損かが出ます。';
+    } else if (top && top === rows[0]) {
+      msg = 'いちばん得が大きいのは' + NAMES[top.key] + 'で、月' + signed(top.net) + 'の計算です。';
     } else if (top) {
-      summary.textContent = '入力した使い方だと、いちばん得が大きいのは' + NAMES[top.key] + 'で、月' + signed(top.net) + 'の計算です。';
-    } else if (nProfit > 0) {
-      summary.textContent = '得になる計算のサービスはありますが、どれも「今入っている」か「前に無料体験を使った」にチェックがあります。';
+      msg = '無料体験で試せる中では、' + NAMES[top.key] + 'がいちばん得が大きく、月' + signed(top.net) + 'の計算です。';
+    } else if (bestOwned) {
+      msg = (bestOwned.used ? '今入っている' : '前に無料体験を使った') + NAMES[bestOwned.key] + 'は、月' + signed(bestOwned.net) + 'の計算です。';
     } else {
-      summary.textContent = '入力した使い方だと、元が取れる計算のサービスはありません。今は入らなくてよさそうです。';
+      msg = '入力した使い方だと、元が取れる計算のサービスはありません。今は入らなくてよさそうです。';
     }
+    if (rows.length && res.pending.length) {
+      msg += '(' + res.pending.map(function (k) { return SHORT[k]; }).join('・') + 'は、数字を入れると出ます)';
+    }
+    summary.textContent = msg;
+    document.getElementById('result-detail').hidden = !rows.length;
+    document.getElementById('to-detail').hidden = !rows.length;
 
     var adj = document.getElementById('adjusted');
     adj.hidden = !adjusted.length;
@@ -322,18 +352,56 @@
       list.appendChild(li);
     });
 
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', rows.length ? 'calc_complete' : 'calc_empty', {
-        top_service: top ? top.key : 'none',
-        n_profitable: nProfit,
-        n_rows: rows.length,
-        is_student: res.isStudent ? 'yes' : 'no',
-        order_band: band(num('small-orders', { int: true }), [0, 2, 5]),
-        read_band: band(num('ku-books', { int: true }), [0, 2, 5]),
-        listen_band: band(num('aud-hours'), [0, 10, 30]),
-        music_band: num('music-now') > 0 ? 'paying' : 'none'
-      });
-    }
+    updateSticky(rows, top, bestOwned, res.pending);
+    lastStatus = rows.length ? msg : '';
+    // GA4: 数字が入った行がある時だけ、入力が止まって2秒後、結果が変わった時に1回送る。区分はこの時点の値
+    clearTimeout(gaTimer);
+    if (!rows.length || !gaReady) return;
+    var sig = JSON.stringify(rows.map(function (r) { return [r.key, Math.round(r.net)]; }));
+    var params = {
+      top_service: top ? top.key : 'none',
+      n_profitable: nProfit,
+      n_rows: rows.length,
+      is_student: res.isStudent ? 'yes' : 'no',
+      order_band: res.bands.order_band,
+      read_band: res.bands.read_band,
+      listen_band: res.bands.listen_band,
+      music_band: res.bands.music_band
+    };
+    gaTimer = setTimeout(function () {
+      if (sig === lastSig || typeof window.gtag !== 'function') return;
+      lastSig = sig;
+      window.gtag('event', 'calc_complete', params);
+    }, 2000);
+  }
+  var gaTimer = null, lastSig = '', gaReady = false, lastStatus = '';
+
+  // スマホで結果が画面の外にある時だけ、下に「いちばん得」の帯を出す
+  var sticky = document.getElementById('sticky-result');
+  var stickyText = document.getElementById('sticky-text');
+  var resultInView = false;
+  var formFocused = false;
+  function updateSticky(rows, top, bestOwned, pending) {
+    if (!rows.length) { sticky.hidden = true; return; }
+    var r = top ? '試すなら ' + SHORT[top.key] + ' 月+' + Math.round(top.net).toLocaleString('ja-JP') + '円(試算)'
+      : (bestOwned ? SHORT[bestOwned.key] + ' 月+' + Math.round(bestOwned.net).toLocaleString('ja-JP') + '円(試算)' : '今は元が取れる計算のものなし');
+    stickyText.textContent = r;
+    sticky.hidden = resultInView || formFocused;
+  }
+  // 入力中は帯を隠して、フォーカスした欄が帯の後ろに入らないようにする
+  form.addEventListener('focusin', function (e) {
+    if (e.target.matches('input, button, summary')) { formFocused = true; sticky.hidden = true; }
+  });
+  form.addEventListener('focusout', function () {
+    formFocused = false;
+    setTimeout(function () { if (!formFocused && document.querySelectorAll('#cards li').length && !resultInView) sticky.hidden = false; }, 50);
+  });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) {
+      resultInView = es[0].isIntersecting;
+      if (resultInView) sticky.hidden = true;
+      else if (document.querySelectorAll('#cards li').length && !formFocused) sticky.hidden = false;
+    }).observe(out);
   }
 
   // 学生の時は、Prime Studentの欄を出す(通常のプライムの「今入っている」は学生でも出したまま)
@@ -346,12 +414,45 @@
     }
   }
 
-  // 計算した後に入力が変わったら、古い結果を隠す
-  function markStale() {
-    if (!out.hidden) {
-      out.hidden = true;
-    }
+  // 選んだサービスの質問だけ開く
+  function syncSections() {
+    var any = false;
+    document.querySelectorAll('.tile input[data-sec]').forEach(function (cb) {
+      document.getElementById(cb.dataset.sec).hidden = !cb.checked;
+      cb.closest('.tile').classList.toggle('is-on', cb.checked);
+      if (cb.checked) any = true;
+    });
+    document.getElementById('step-guide-text').textContent = any ? '選んだものの質問に答える(入れるとすぐ結果が変わります)' : '上で選ぶと、ここに質問が出ます。';
+    document.getElementById('step-guide').classList.toggle('is-active', any);
   }
+
+  // 入力のたびに計算し直す(少し待ってから)
+  var liveTimer = null;
+  function live(fix) {
+    clearTimeout(liveTimer);
+    liveTimer = setTimeout(function () {
+      fixMode = !!fix; render(compute()); fixMode = false;
+      if (fix) announce();
+    }, 150);
+  }
+
+  // 読み上げ用: 確定した時だけ、結果を1文で知らせる
+  var statusEl = document.getElementById('live-status');
+  var statusTimer = null;
+  function announce() {
+    clearTimeout(statusTimer);
+    statusTimer = setTimeout(function () { statusEl.textContent = lastStatus; }, 800);
+  }
+
+  // −/+ボタン
+  document.querySelectorAll('.step[data-target]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var t = document.getElementById(btn.dataset.target);
+      var v = parseFloat(t.value) || 0;
+      t.value = String(Math.min(1000000, Math.max(0, Math.floor(v + parseFloat(btn.dataset.step)))));
+      t.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  });
 
   // よく使う値のボタン
   document.querySelectorAll('[data-set]').forEach(function (btn) {
@@ -364,21 +465,35 @@
 
   document.getElementById('is-student').addEventListener('change', syncStudent);
   syncStudent();
-  form.addEventListener('input', markStale);
-  form.addEventListener('change', markStale);
+  syncSections();
+  form.addEventListener('change', function (e) {
+    if (e.target.matches('.tile input')) syncSections();
+    live(true);
+  });
+  form.addEventListener('input', function () { live(false); });
 
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
+  function goResult() {
+    clearTimeout(liveTimer);
+    fixMode = true;
     render(compute());
+    fixMode = false;
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     out.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
     summary.focus({ preventScroll: true });
-  });
+  }
+  form.addEventListener('submit', function (e) { e.preventDefault(); goResult(); });
+  document.getElementById('sticky-link').addEventListener('click', function (e) { e.preventDefault(); goResult(); });
   form.addEventListener('reset', function () {
     setTimeout(function () {
+      document.querySelectorAll('#calc details[open]').forEach(function (d) { d.open = false; });
+      lastSig = '';
       syncStudent();
-      out.hidden = true;
-      document.getElementById('is-student').focus();
+      syncSections();
+      render(compute());
+      window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 10 });
+      document.getElementById('use-shop').focus();
     }, 0);
   });
+  render(compute());
+  gaReady = true;  // 読み込み直後(ブラウザが入力値を戻した時)は送らない
 })();
