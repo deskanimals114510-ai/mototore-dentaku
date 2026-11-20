@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazonプライムは入るべき?キンドルアンリミテッド・オーディブルの損益分岐点を計算|元とれ電卓</title>
+<meta name="description" content="Amazonプライムは入るべきか、Kindle+(キンドルアンリミテッド)やオーディブルはお得か。注文回数・読む冊数・聴く時間を入れると、5つのサブスクが月いくら得か損かを計算します。損益分岐点つき。個人が作った非公式ツールです。">
+<link rel="canonical" href="https://deskanimals114510-ai.github.io/mototore-dentaku/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="元とれ電卓">
+<meta property="og:title" content="元とれ電卓|Amazonのサブスクは月いくら得か計算">
+<meta property="og:description" content="注文回数・読む冊数・聴く時間を入れると、プライム・Kindle+・オーディブル・Music Unlimited・Prime Studentが月いくら得か損かを計算します。個人が作った非公式ツールです。">
+<meta property="og:url" content="https://deskanimals114510-ai.github.io/mototore-dentaku/">
+<meta property="og:image" content="https://deskanimals114510-ai.github.io/mototore-dentaku/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="元とれ電卓:サブスクが月いくら得か損かを計算">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0d6a5b">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2218%22 fill=%22%230d6a5b%22/><rect x=%2224%22 y=%2218%22 width=%2252%22 height=%2264%22 rx=%226%22 fill=%22%23ffffff%22/><rect x=%2232%22 y=%2226%22 width=%2236%22 height=%2214%22 rx=%222%22 fill=%22%230d6a5b%22/><circle cx=%2238%22 cy=%2254%22 r=%225%22 fill=%22%230d6a5b%22/><circle cx=%2250%22 cy=%2254%22 r=%225%22 fill=%22%230d6a5b%22/><circle cx=%2262%22 cy=%2254%22 r=%225%22 fill=%22%230d6a5b%22/><circle cx=%2238%22 cy=%2270%22 r=%225%22 fill=%22%230d6a5b%22/><circle cx=%2250%22 cy=%2270%22 r=%225%22 fill=%22%230d6a5b%22/><circle cx=%2262%22 cy=%2270%22 r=%225%22 fill=%22%230d6a5b%22/></svg>">
+<link rel="stylesheet" href="style.css">
+<script defer src="analytics.js"></script>
+<script defer src="app.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"元とれ電卓","url":"https://deskanimals114510-ai.github.io/mototore-dentaku/","applicationCategory":"FinanceApplication","operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"description":"注文回数・読む冊数・聴く時間を入れると、Amazonの5つのサブスクが月いくら得か損かを計算する非公式ツール。","datePublished":"2026-11-21","dateModified":"2026-11-21","publisher":{"@type":"Person","name":"Desk Animals Lab"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Amazonプライムは入るべき?月何回の注文で元が取れる?","acceptedAnswer":{"@type":"Answer","text":"会員でない人は、Amazon.co.jpが発送する3,500円未満の注文に送料460円(本州・四国)がかかります。月額600円なら、まとめて3,500円以上にできない注文が月2回(送料920円)あれば、送料だけで会費を上回る計算です。料金は2026年11月21日時点です。"}},{"@type":"Question","name":"Kindle+(キンドルアンリミテッド)はお得?月何冊で元が取れる?","acceptedAnswer":{"@type":"Answer","text":"月額980円です。読み放題の対象の本を、買うと1冊700円なら月2冊(1,400円)で月額を上回る計算です。読みたい本が対象かどうかで変わります。料金は2026年11月21日時点です。"}},{"@type":"Question","name":"オーディブルは必要?聴く時間で損益分岐点を計算すると?","acceptedAnswer":{"@type":"Answer","text":"毎月1冊を選べるスタンダードは月額880円、聴き放題のプレミアムは月額1,500円です。買うと1冊2,000円・約9時間の本なら、月1冊ならスタンダード、月2冊(約18時間)以上ならプレミアムの方が得になる計算です。料金は2026年11月21日時点です。"}},{"@type":"Question","name":"無料体験は2回目も使える?","acceptedAnswer":{"@type":"Answer","text":"無料体験は対象の人だけが使えます。前に使ったことがある人は対象にならない場合があり、対象かどうかは申し込みの画面で表示されます。期間が終わると自動で有料に切り替わるので、続けない場合は期間内に解約してください。"}}]}]}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">本文へ移動</a>
+<div class="pr-bar">
+  <div class="wrap">
+    <p><span class="pr-tag">PR</span>このページにはAmazonアソシエイトのリンクを含みます。Amazonのアソシエイトとして、元とれ電卓は適格販売により収入を得ています。</p>
+  </div>
+</div>
+<header class="site-header">
+  <div class="wrap">
+    <a class="site-name" href="./">元とれ<span>電卓</span></a>
+  </div>
+</header>
+<main id="main">
+<div class="wrap">
+  <h1>Amazonのサブスク、<br>月いくら得か計算する</h1>
+  <p class="lead">プライム・Kindle+(キンドルアンリミテッド)・オーディブル・Music Unlimited・Prime Studentを、自分の使い方で比べます。使うところだけ入れて「計算する」を押してください。</p>
+  <p class="unofficial">個人が作った非公式の試算ツールで、Amazon.co.jpとは関係ありません。入力した数字はこの端末の中だけで計算し、数字そのものはどこにも送りません(アクセス解析には、おおまかな区分だけを記録します)。</p>
+
+  <section class="quick-answers" aria-labelledby="qa-h">
+    <h2 id="qa-h">損益分岐点の目安(2026年11月21日時点の料金)</h2>
+    <ul>
+      <li><a href="#prime">プライム(月額600円)</a>:3,500円未満の注文が<b>月2回</b>で送料が会費を上回る</li>
+      <li><a href="#student">Prime Student(月額300円)</a>:3,500円未満の注文が<b>月1回</b>で上回る</li>
+      <li><a href="#kindle">Kindle+(月額980円)</a>:1冊700円の対象の本を<b>月2冊</b>で上回る</li>
+      <li><a href="#audible">オーディブル</a>:1冊2,000円の本を<b>月1冊ならスタンダード(880円)、月2冊以上ならプレミアム(1,500円)</b></li>
+      <li><a href="#music">Music Unlimited</a>:今払っている音楽サブスクの月額と比べる</li>
+    </ul>
+  </section>
+
+  <form id="calc" novalidate>
+    <section class="panel" aria-labelledby="q-you">
+      <h2 id="q-you">あなたについて</h2>
+      <div class="field">
+        <label class="check"><input type="checkbox" id="is-student" aria-describedby="is-student-note"><span>大学・大学院・短大・専門学校・高専の学生</span></label>
+        <span class="note" id="is-student-note">高校生はPrime Studentの対象外です。チェックすると、プライムの代わりにPrime Student、Music Unlimitedは学生プランで計算します。</span>
+      </div>
+      <fieldset class="field">
+        <legend class="label">今入っているもの</legend>
+        <span class="note" id="have-note">比べるだけにして、無料体験の案内を出しません。Music Unlimitedの料金は、プライム(Prime Student)に今入っているかで決まります。</span>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="have-prime" aria-describedby="have-note"><span>Amazonプライム</span></label>
+          <label class="check" data-student="only" hidden><input type="checkbox" id="have-student" aria-describedby="have-note"><span>Prime Student</span></label>
+          <label class="check"><input type="checkbox" id="have-kindle"><span>Kindle+</span></label>
+          <label class="check"><input type="checkbox" id="have-audible"><span>オーディブル</span></label>
+          <label class="check"><input type="checkbox" id="have-music"><span>Music Unlimited</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="field">
+        <legend class="label">前に無料体験を使ったもの</legend>
+        <span class="note" id="tried-note">無料体験の対象にならない場合があるので、案内を出しません。</span>
+        <div class="checks">
+          <label class="check" data-student="not"><input type="checkbox" id="tried-prime" aria-describedby="tried-note"><span>Amazonプライム</span></label>
+          <label class="check" data-student="only" hidden><input type="checkbox" id="tried-student" aria-describedby="tried-note"><span>Prime Student</span></label>
+          <label class="check"><input type="checkbox" id="tried-kindle"><span>Kindle+</span></label>
+          <label class="check"><input type="checkbox" id="tried-audible"><span>オーディブル</span></label>
+          <label class="check"><input type="checkbox" id="tried-music"><span>Music Unlimited</span></label>
+        </div>
+      </fieldset>
+    </section>
+
+    <section class="panel" aria-labelledby="q-shop">
+      <h2 id="q-shop">買い物(プライム・Prime Student)</h2>
+      <p class="hint">Amazon.co.jpが発送する商品で数えます。3,500円以上の注文は会員でなくても通常配送が無料です。</p>
+      <div class="field">
+        <label for="small-orders">まとめて3,500円以上にできない注文は月に何回?</label>
+        <span class="note" id="small-orders-note">会員でないと1回460円(本州・四国)の送料がかかる注文です</span>
+        <div class="input-row"><input type="number" id="small-orders" inputmode="numeric" min="0" step="1" value="0" aria-describedby="small-orders-note"><span class="unit">回</span>
+          <div class="quick" role="group" aria-label="3,500円未満の注文の回数"><button type="button" data-target="small-orders" data-set="1">1回</button><button type="button" data-target="small-orders" data-set="2">2回</button><button type="button" data-target="small-orders" data-set="4">4回</button><button type="button" data-target="small-orders" data-set="8">8回</button></div>
+        </div>
+      </div>
+      <details class="more">
+        <summary>お急ぎ便・Prime Videoも入れる(任意)</summary>
+        <div class="field">
+          <label for="rush-orders">3,500円以上の注文で、お急ぎ便・日時指定を使いたい回数は?</label>
+          <span class="note" id="rush-orders-note">会員でないと1回510円かかります</span>
+          <div class="input-row"><input type="number" id="rush-orders" inputmode="numeric" min="0" step="1" value="0" aria-describedby="rush-orders-note"><span class="unit">回</span></div>
+        </div>
+        <div class="field">
+          <label for="video-value">Prime Videoなどの見放題に、月いくらの価値がある?</label>
+          <span class="note" id="video-value-note">見ないなら0円。ほかの動画サービスの代わりにするなら、その月額くらい</span>
+          <div class="input-row"><input type="number" id="video-value" inputmode="numeric" min="0" step="10" value="0" aria-describedby="video-value-note"><span class="unit">円</span></div>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel" aria-labelledby="q-read">
+      <h2 id="q-read">読む(Kindle+)</h2>
+      <p class="hint">全部の本が読み放題の対象ではありません。読みたい本のうち、対象の本で、入らなければ実際に買う本だけを数えてください。</p>
+      <div class="field">
+        <label for="ku-books">対象の本を月に何冊読む?</label>
+        <div class="input-row"><input type="number" id="ku-books" inputmode="numeric" min="0" step="1" value="0"><span class="unit">冊</span>
+          <div class="quick" role="group" aria-label="読む冊数"><button type="button" data-target="ku-books" data-set="1">1冊</button><button type="button" data-target="ku-books" data-set="2">2冊</button><button type="button" data-target="ku-books" data-set="4">4冊</button><button type="button" data-target="ku-books" data-set="8">8冊</button></div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="ku-price">買うと1冊いくら?</label>
+        <span class="note" id="ku-price-note">仮に700円で計算します。よく読む本(漫画・雑誌・小説など)の値段に変えてください</span>
+        <div class="input-row"><input type="number" id="ku-price" inputmode="numeric" min="0" step="10" value="700" aria-describedby="ku-price-note"><span class="unit">円</span></div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="q-listen">
+      <h2 id="q-listen">聴く(オーディブル)</h2>
+      <p class="hint">通勤・家事・運動など、耳が空いている時間で考えます。聴き放題の対象の本で、入らなければ実際に買う本だけを数えてください。</p>
+      <div class="field">
+        <label for="aud-hours">本を聴く時間は月に何時間?</label>
+        <span class="note" id="aud-hours-note">1日30分を20日なら10時間</span>
+        <div class="input-row"><input type="number" id="aud-hours" inputmode="numeric" min="0" step="1" value="0" aria-describedby="aud-hours-note"><span class="unit">時間</span>
+          <div class="quick" role="group" aria-label="聴く時間"><button type="button" data-target="aud-hours" data-set="5">5時間</button><button type="button" data-target="aud-hours" data-set="10">10時間</button><button type="button" data-target="aud-hours" data-set="20">20時間</button><button type="button" data-target="aud-hours" data-set="40">40時間</button></div>
+        </div>
+      </div>
+      <details class="more">
+        <summary>1冊の長さと値段を変える(任意)</summary>
+        <div class="field">
+          <label for="aud-book-hours">1冊を何時間で聴き終える?</label>
+          <span class="note" id="aud-book-hours-note">仮に9時間で計算します。本によって数時間〜十数時間です</span>
+          <div class="input-row"><input type="number" id="aud-book-hours" inputmode="decimal" min="1" step="1" value="9" aria-describedby="aud-book-hours-note"><span class="unit">時間</span></div>
+        </div>
+        <div class="field">
+          <label for="aud-price">聴きたい本を1冊ずつ買うと、いくら?</label>
+          <span class="note" id="aud-price-note">仮に2,000円で計算します。聴きたい本の値段に変えてください</span>
+          <div class="input-row"><input type="number" id="aud-price" inputmode="numeric" min="0" step="10" value="2000" aria-describedby="aud-price-note"><span class="unit">円</span></div>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel" aria-labelledby="q-music">
+      <h2 id="q-music">音楽(Music Unlimited)</h2>
+      <p class="hint">今お金を払っている音楽サブスクを、Music Unlimitedに入れ替える前提で計算します。払っていなければ0のままで、計算しません。</p>
+      <div class="field">
+        <label for="music-now">今払っている音楽サブスクは月いくら?</label>
+        <div class="input-row"><input type="number" id="music-now" inputmode="numeric" min="0" step="10" value="0"><span class="unit">円</span></div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="q-fee">
+      <h2 id="q-fee">料金(変わったら直せます)</h2>
+      <p class="hint asof">確認日:2026年11月21日。公式ページの料金(税込)を入れてあります。キャンペーンの料金は入れていません。</p>
+      <details class="more">
+        <summary>料金と前提を見る・直す</summary>
+        <div class="fee-grid">
+          <div class="field" data-student="not"><label for="fee-prime">プライム 月額</label><div class="input-row"><input type="number" id="fee-prime" inputmode="numeric" min="0" value="600"><span class="unit">円</span></div></div>
+          <div class="field" data-student="not"><label for="fee-prime-year">プライム 年額</label><div class="input-row"><input type="number" id="fee-prime-year" inputmode="numeric" min="0" value="5900"><span class="unit">円</span></div></div>
+          <div class="field" data-student="only" hidden><label for="fee-student">Prime Student 月額</label><div class="input-row"><input type="number" id="fee-student" inputmode="numeric" min="0" value="300"><span class="unit">円</span></div></div>
+          <div class="field"><label for="fee-kindle">Kindle+ 月額</label><div class="input-row"><input type="number" id="fee-kindle" inputmode="numeric" min="0" value="980"><span class="unit">円</span></div></div>
+          <div class="field"><label for="fee-aud-s">オーディブル スタンダード(毎月1冊) 月額</label><div class="input-row"><input type="number" id="fee-aud-s" inputmode="numeric" min="0" value="880"><span class="unit">円</span></div></div>
+          <div class="field"><label for="fee-aud-p">オーディブル プレミアム(聴き放題) 月額</label><div class="input-row"><input type="number" id="fee-aud-p" inputmode="numeric" min="0" value="1500"><span class="unit">円</span></div></div>
+          <div class="field" data-student="not"><label for="fee-music-member">Music Unlimited 個人(プライム会員) 月額</label><div class="input-row"><input type="number" id="fee-music-member" inputmode="numeric" min="0" value="1080"><span class="unit">円</span></div></div>
+          <div class="field" data-student="not"><label for="fee-music-non">Music Unlimited 個人(会員でない) 月額</label><div class="input-row"><input type="number" id="fee-music-non" inputmode="numeric" min="0" value="1180"><span class="unit">円</span></div></div>
+          <div class="field" data-student="only" hidden><label for="fee-music-student">Music Unlimited 学生プラン 月額</label><span class="note" id="fee-music-student-note">公式ページの中で580円と680円の表記があります。申し込みの画面で確かめてください</span><div class="input-row"><input type="number" id="fee-music-student" inputmode="numeric" min="0" value="580" aria-describedby="fee-music-student-note"><span class="unit">円</span></div></div>
+          <div class="field"><label for="ship-fee">会員でない時の送料(3,500円未満)</label><span class="note" id="ship-fee-note">北海道・九州・沖縄・離島は500円</span><div class="input-row"><input type="number" id="ship-fee" inputmode="numeric" min="0" value="460" aria-describedby="ship-fee-note"><span class="unit">円</span></div></div>
+          <div class="field"><label for="rush-extra">会員でない時のお急ぎ便(3,500円以上の注文)</label><span class="note" id="rush-extra-note">北海道・九州・沖縄は550円</span><div class="input-row"><input type="number" id="rush-extra" inputmode="numeric" min="0" value="510" aria-describedby="rush-extra-note"><span class="unit">円</span></div></div>
+        </div>
+      </details>
+    </section>
+
+    <div class="actions">
+      <button type="submit" class="btn-calc">計算する</button>
+      <button type="reset" class="btn-reset">入力を消す</button>
+    </div>
+  </form>
+
+  <section id="result" aria-labelledby="result-h" hidden>
+    <h2 id="result-h" class="vh">計算の結果</h2>
+    <p id="summary" tabindex="-1"></p>
+    <p id="adjusted" class="small" hidden></p>
+    <div id="top-pick" class="panel" hidden></div>
+    <h3 class="vh">サブスクの得と損(得の大きい順)</h3>
+    <ul id="cards"></ul>
+    <ul class="premise">
+      <li>結果は、入力した値と上の料金をもとにした目安で、得を約束するものではありません。</li>
+      <li>「得」は、サブスクに入らずに同じことをした場合(送料を払う・本を1冊ずつ買う・今の音楽サブスクを続ける)と比べた差です。入らない時に実際には買わない本は、数えない方が正確です。</li>
+      <li>無料体験は対象の人だけが使えます(前に使った人は対象外の場合があります)。期間や条件は申し込みの画面で確かめてください。期間が終わると自動で有料に切り替わるので、続けない場合は期間内に解約してください。</li>
+      <li>Music Unlimitedは、プライム(Prime Student)に今入っている場合は会員の料金で計算しています。</li>
+    </ul>
+  </section>
+
+  <div class="content">
+    <h2 id="prime">Amazonプライムは入るべき?月何回の注文で元が取れる</h2>
+    <p>会員でない人は、Amazon.co.jpが発送する3,500円未満の注文に、本州・四国で1回460円の送料がかかります(2026年11月21日時点)。プライムの月額は600円なので、<strong>まとめて3,500円以上にできない注文が月2回(送料920円)あれば、送料だけで会費を上回る計算</strong>です。年会費5,900円なら月あたり約492円で、同じく月2回が目安です。</p>
+    <p>3,500円以上の注文は会員でなくても通常配送が無料なので、まとめ買いが多い人は回数に数えません。お急ぎ便・日時指定(会員でないと1回510円)をよく使う人や、Prime Videoを見る人は、そのぶん得が増えます。</p>
+    <div class="table-scroll"><table>
+      <caption class="vh">プライムの損益分岐点</caption>
+      <thead><tr><th scope="col">送料がかかる注文(月)</th><th scope="col">送料の合計</th><th scope="col">月額600円との差</th></tr></thead>
+      <tbody><tr><th scope="row">1回</th><td>460円</td><td>−140円 損</td></tr><tr><th scope="row">2回</th><td>920円</td><td>+320円 得</td></tr><tr><th scope="row">4回</th><td>1,840円</td><td>+1,240円 得</td></tr></tbody>
+    </table></div>
+
+    <h2 id="student">Prime Studentは月何回の注文で元が取れる?(目安は月1回)</h2>
+    <p>大学・大学院・短大・専門学校・高専の学生向けのプランで、月額300円・年額2,950円です(2026年11月21日時点)。<strong>まとめて3,500円以上にできない注文が月1回(送料460円)あれば、会費を上回る計算</strong>です。高校生は対象外で、18歳未満の人が申し込むには保護者の同意が要ります。プライムとは同時に入らないので、この計算機では学生にチェックを入れると、プライムの代わりにPrime Studentで計算します。</p>
+
+    <h2 id="kindle">Kindle+(キンドルアンリミテッド)はお得?月何冊で元が取れる</h2>
+    <p>Kindle+は、2026年10月22日にKindle Unlimitedから名前が変わった読み放題で、月額980円です(2026年11月21日時点)。<strong>買うと1冊700円の対象の本なら、月2冊(1,400円)で月額を上回る計算</strong>です。</p>
+    <div class="table-scroll"><table>
+      <caption class="vh">Kindle+の損益分岐点</caption>
+      <thead><tr><th scope="col">1冊の値段</th><th scope="col">元が取れる目安の冊数(月)</th></tr></thead>
+      <tbody><tr><th scope="row">500円(漫画など)</th><td>2冊</td></tr><tr><th scope="row">700円</th><td>2冊</td></tr><tr><th scope="row">1,000円</th><td>1冊</td></tr></tbody>
+    </table></div>
+    <p>ただし、すべての本が読み放題の対象ではありません。読みたい本が対象かどうかで結果が変わります。プライム会員なら、追加料金なしのPrime Readingで読める本もあるので、その本は数えなくて済みます。</p>
+
+    <h2 id="audible">オーディブルは必要?聴く時間で損益分岐点を計算</h2>
+    <p>オーディブルには、毎月1冊を選べるスタンダード(月額880円)と、対象の作品が聴き放題のプレミアム(月額1,500円)があります(2026年11月21日時点)。買うと1冊2,000円・約9時間の本なら、<strong>月1冊(約9時間)ならスタンダード、月2冊(約18時間)以上ならプレミアムの方が得になる計算</strong>です。1日30分を20日聴くと月10時間になります。</p>
+    <p>プレミアムで聴けるのは聴き放題の対象の作品だけです。計算機では両方のプランを計算して、得な方を出します。</p>
+
+    <h2 id="music">Music Unlimitedは、今の音楽サブスクと比べる</h2>
+    <p>プライム会員には、追加料金なしのAmazon Music Primeがあります(シャッフル再生が中心)。好きな曲を選んで聴きたい人向けの有料プランがMusic Unlimitedで、個人プランはプライム会員が月額1,080円、会員でない人が月額1,180円です(2026年11月21日時点)。学生プランは公式ページの中で580円と680円の表記があるため、申し込みの画面で確かめてください。音楽を聴く時間をお金に換えるのは難しいので、この計算機では<strong>今払っている音楽サブスクの月額と比べます</strong>。</p>
+
+    <h2 id="faq">よくある質問</h2>
+    <h3>無料体験は2回目も使える?</h3>
+    <p>無料体験は対象の人だけが使えます。前に使ったことがある人は対象にならない場合があり、対象かどうかは申し込みの画面で表示されます。期間が終わると自動で有料に切り替わるので、続けない場合は期間内に解約してください。</p>
+    <h3>「まず試すなら」はどうやって選んでいる?</h3>
+    <p>入力した値で得の額がいちばん大きいものを、機械的に選んでいます。同じ額なら月額が安い方を上にします。紹介料の額は関係ありません。どれも得にならない場合は、何もすすめません。</p>
+    <h3>料金が変わっていたら?</h3>
+    <p>「料金と前提を見る・直す」から、今の料金に直して計算できます。</p>
+
+    <h2 id="sources">料金の出典</h2>
+    <p class="asof">確認日:2026年11月21日(税込)。最新の料金は公式ページで確かめてください。</p>
+    <ul>
+      <li><a href="https://www.amazon.co.jp/gp/help/customer/display.html?nodeId=G6LDPN7YJHYKH2J6" target="_blank" rel="noopener">Amazonプライム会員特典と会費(Amazon.co.jp ヘルプ)<span class="vh">(新しいタブで開きます)</span></a></li>
+      <li><a href="https://www.amazon.co.jp/gp/help/customer/display.html?nodeId=201911210" target="_blank" rel="noopener">配送料と配送条件(Amazon.co.jp ヘルプ)<span class="vh">(新しいタブで開きます)</span></a></li>
+      <li><a href="https://www.amazon.co.jp/gp/help/customer/display.html?nodeId=GWMNXPTL3482JPHC" target="_blank" rel="noopener">Prime Student(Amazon.co.jp ヘルプ)<span class="vh">(新しいタブで開きます)</span></a></li>
+      <li><a href="https://www.amazon.co.jp/gp/help/customer/display.html?nodeId=GTQEND3RFAFNLKU5" target="_blank" rel="noopener">Kindle+(Amazon.co.jp ヘルプ)<span class="vh">(新しいタブで開きます)</span></a></li>
+      <li><a href="https://www.audible.co.jp/ep/faq" target="_blank" rel="noopener">よくある質問(Audible)<span class="vh">(新しいタブで開きます)</span></a></li>
+      <li><a href="https://www.amazon.co.jp/b?ie=UTF8&amp;node=7993628051" target="_blank" rel="noopener">Amazon Music Unlimited(Amazon.co.jp)<span class="vh">(新しいタブで開きます)</span></a></li>
+    </ul>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Amazonのアソシエイトとして、元とれ電卓は適格販売により収入を得ています。</p>
+    <p>個人が作った非公式の試算ツールで、Amazon.co.jpとは関係ありません。Amazon、Amazonプライム、Prime Student、Kindle、Audible、Amazon MusicおよびそれらのロゴはAmazon.com, Inc.またはその関連会社の商標です。</p>
+    <p>計算の結果は目安です。料金の確認日は2026年11月21日。文章とサイトの制作には生成AIの支援を使っています。</p>
+    <p><a href="privacy/">プライバシーポリシー・運営者情報</a> / Desk Animals Lab</p>
+  </div>
+</footer>
+</body>
+</html>
