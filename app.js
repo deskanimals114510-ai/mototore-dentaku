@@ -25,6 +25,7 @@
     audible: 'Audible(オーディブル)',
     music: 'Music Unlimited'
   };
+  var SHORT = { prime: 'プライム', student: 'Prime Student', kindle: 'Kindle+', audible: 'オーディブル', music: 'Music Unlimited' };
   // 無料体験の長さ(日)。同じ得の額の時の並べ替えにだけ使う
   var TRIAL_DAYS = { prime: 30, student: 180, kindle: 30, audible: 30, music: 30 };
 
@@ -141,12 +142,10 @@
       var audPlan = premium ? 'プレミアム(聴き放題)' : 'スタンダード(毎月1冊)';
       var even = '';
       if (audPrice > 0) {
-        if (premium) {
-          var ape = breakEven(p.audP, audPrice);
-          even = 'プレミアムは、1冊' + yen(audPrice) + 'なら月' + count(ape) + '冊(約' + count(ape * bookHours) + '時間)から月額を上回る計算';
-        } else if (audPrice > p.audS) {
-          even = 'スタンダードは、1冊' + yen(audPrice) + 'の本を月1冊聴けば月額を上回る計算。プレミアムの方が得になるのは、もっと多く聴く場合';
-        }
+        // プレミアムがスタンダードより得になる聴く時間: 冊数 > 1 + (プレミアム−スタンダード)/1冊の値段
+        var switchHours = Math.ceil(bookHours * (1 + (p.audP - p.audS) / audPrice));
+        even = (premium ? 'プレミアムで計算。' : (audPrice > p.audS ? 'スタンダードは、月1冊聴けば月額を上回る計算。' : '')) +
+          '1冊' + yen(audPrice) + 'なら、聴く時間が月' + count(switchHours) + '時間を超えるとプレミアムの方が得';
       }
       rows.push({
         key: 'audible', net: premium ? netP : netS, fee: premium ? p.audP : p.audS, plan: audPlan,
@@ -244,6 +243,13 @@
     var topBox = document.getElementById('top-pick');
     topBox.innerHTML = '';
     if (top) {
+      var art = document.createElement('img');
+      art.className = 'top-art';
+      art.src = 'img/' + top.key + '.webp';
+      art.width = 640;
+      art.height = 480;
+      art.alt = '';
+      topBox.appendChild(art);
       topBox.appendChild(text('h3', '', 'まず無料体験で試すなら: ' + NAMES[top.key]));
       topBox.appendChild(text('p', 'top-net', '月' + signed(top.net) + (top.plan ? '(' + top.plan + ')' : '')));
       topBox.appendChild(makeLink(top, 'top_pick', 1));
@@ -251,6 +257,41 @@
       topBox.hidden = false;
     } else {
       topBox.hidden = true;
+    }
+
+    // 得と損の棒(0を真ん中に、得は右・損は左)。数字と「得/損」の文字も添えるので色だけに頼らない
+    var chart = document.getElementById('result-chart');
+    chart.innerHTML = '';
+    chart.hidden = rows.length < 2;
+    if (rows.length >= 2) {
+      var maxAbs = rows.reduce(function (m, r) { return Math.max(m, Math.abs(Math.round(r.net))); }, 1);
+      var hasLoss = rows.some(function (r) { return Math.round(r.net) < 0; });
+      var hasGain = rows.some(function (r) { return Math.round(r.net) > 0; });
+      // 損がなければ0を左端、得がなければ右端に置く
+      var zero = hasLoss && hasGain ? 50 : (hasLoss ? 100 : 0);
+      var span = hasLoss && hasGain ? 50 : 100;
+      chart.style.setProperty('--zero', zero + '%');
+      var hd = document.createElement('p');
+      hd.className = 'rc-head';
+      hd.appendChild(text('span', '', hasLoss ? '← 損' : ''));
+      hd.appendChild(text('span', '', hasLoss && hasGain ? '0円の線から、月の得(右)・損(左)' : (hasGain ? '0円の線から、月の得' : '0円の線から、月の損')));
+      hd.appendChild(text('span', '', hasGain ? '得 →' : ''));
+      chart.appendChild(hd);
+      rows.forEach(function (r) {
+        var net = Math.round(r.net);
+        var row = document.createElement('div');
+        row.className = 'rc-row';
+        row.appendChild(text('span', 'rc-name', SHORT[r.key]));
+        var track = document.createElement('div');
+        track.className = 'rc-track';
+        var b = document.createElement('div');
+        b.className = 'rc-bar ' + (net >= 0 ? 'is-gain' : 'is-loss');
+        b.style.width = (Math.abs(net) / maxAbs * span) + '%';
+        track.appendChild(b);
+        row.appendChild(track);
+        row.appendChild(text('span', 'rc-val', signed(r.net)));
+        chart.appendChild(row);
+      });
     }
 
     var list = document.getElementById('cards');

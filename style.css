@@ -22,7 +22,7 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: system-ui, -apple-system, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif;
-  font-size: 16px;
+  font-size: 100%;
   line-height: 1.75;
 }
 a { color: var(--accent); }
@@ -139,3 +139,78 @@ legend.label { font-weight: 700; margin-bottom: 2px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 .field > label.check { display: flex; font-weight: 400; margin-bottom: 0; }
+
+/* 絵(MJ) */
+.hero-art { margin: 0 0 20px; }
+.hero-art img { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 672; object-fit: cover; border-radius: var(--radius); }
+.spot { float: right; width: 38%; max-width: 240px; margin: 0 0 8px 14px; }
+.spot img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
+.content h2 { clear: both; }
+.panel-head { display: flex; align-items: center; gap: 10px; margin: 0 0 4px; }
+.panel-head img { width: 56px; height: 42px; object-fit: cover; border-radius: 8px; flex: none; }
+.panel-head h2 { margin: 0; }
+
+/* 本文の棒グラフ */
+.chart { margin: 14px 0 18px; padding: 14px 14px 10px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.chart-title { font-weight: 700; margin: 0 0 6px; }
+.clegend { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 0.85rem; color: var(--muted); }
+.clegend li { display: flex; align-items: center; gap: 6px; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.carea { position: relative; height: 170px; border-bottom: 1px solid #c9c4b6; margin-top: 18px; }
+.ccols { position: absolute; inset: 0; display: flex; justify-content: space-around; align-items: flex-end; }
+.cgroup { display: flex; align-items: flex-end; gap: 2px; height: 100%; }
+.cbar-col { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; width: 24px; }
+.cbar { width: 100%; border-radius: 4px 4px 0 0; }
+.cbar-val { font-size: 0.72rem; color: var(--muted); white-space: nowrap; margin-bottom: 2px; }
+.s-a { background: #00806a; }
+.s-b { background: #1a7fb0; }
+.s-c { background: #d0553a; }
+.cline { position: absolute; left: 0; right: 0; border-top: 2px dashed var(--ink); z-index: 1; }
+.cline-label { position: absolute; right: 0; top: -1.45em; font-size: 0.75rem; color: var(--ink); background: var(--surface); padding: 0 4px; }
+.cxlabels { display: flex; justify-content: space-around; font-size: 0.8rem; color: var(--muted); margin-top: 4px; text-align: center; }
+.cunit { font-size: 0.78rem; color: var(--muted); text-align: center; margin: 2px 0 0; }
+.chart figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
+
+/* 結果の得損の棒 */
+#result-chart { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; margin: 0 0 12px; }
+.rc-row { display: grid; grid-template-columns: 7.5em 1fr 7.5em; align-items: center; gap: 8px; min-height: 30px; font-size: 0.88rem; }
+.rc-name { overflow-wrap: anywhere; }
+.rc-track { position: relative; height: 14px; }
+.rc-track::before { content: ""; position: absolute; left: var(--zero, 50%); top: -6px; bottom: -6px; border-left: 1px solid #8a8f88; }
+.rc-bar { position: absolute; top: 0; height: 100%; }
+.rc-bar.is-gain { left: var(--zero, 50%); background: #00806a; border-radius: 0 4px 4px 0; }
+.rc-bar.is-loss { right: calc(100% - var(--zero, 50%)); background: #d0553a; border-radius: 4px 0 0 4px; }
+.rc-val { font-weight: 700; text-align: right; white-space: nowrap; }
+@media (max-width: 420px) {
+  .spot { float: none; width: 100%; max-width: none; margin: 0 0 10px; }
+  .rc-row { grid-template-columns: 6em 1fr 6.8em; font-size: 0.8rem; }
+}
+.intro { display: grid; gap: 4px 28px; grid-template-columns: 1fr; align-items: center; margin-bottom: 20px; }
+.intro .hero-art { margin: 8px 0 0; }
+@media (min-width: 720px) {
+  .intro { grid-template-columns: 1.05fr 1fr; }
+  .intro .hero-art { margin: 28px 0 0; }
+}
+.has-lines .carea, .has-lines .cxlabels, .has-lines .cunit { margin-right: 7.2em; }
+.cline-label { left: 100%; right: auto; top: -0.75em; margin-left: 6px; width: 7em; white-space: normal; line-height: 1.25; padding: 0; background: none; }
+#top-pick::after { content: ""; display: block; clear: both; }
+.top-art { float: right; width: 34%; max-width: 200px; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; margin: 0 0 8px 12px; }
+@media (max-width: 420px) { .top-art { width: 40%; } }
+.cline-label { white-space: nowrap; top: -1.35em; }
+.cline + .cline .cline-label { top: 0.2em; }
+.cbar-val { position: relative; z-index: 2; background: var(--surface); padding: 0 2px; border-radius: 3px; }
+@media (max-width: 420px) {
+  .spot { float: right; width: 42%; margin: 4px 0 6px 12px; }
+}
+
+/* 5名レビュー後の調整(2026-11-21) */
+.chart { max-width: 600px; }
+.cbar-col { width: clamp(24px, 8vw, 48px); }
+.cbar-val { font-size: 0.8rem; }
+.rc-head { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin: 0 0 6px; }
+.rc-row { grid-template-columns: minmax(5.5em, auto) minmax(4em, 1fr) auto; }
+@media (max-width: 719px) {
+  .intro .hero-art img { aspect-ratio: 16 / 6; max-height: 140px; }
+  .spot { float: none; width: 100%; max-width: none; margin: 0 0 10px; }
+  .spot img { aspect-ratio: 16 / 7; max-height: 160px; }
+}
